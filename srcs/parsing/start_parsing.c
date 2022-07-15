@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 21:03:24 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/14 04:22:10 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/15 05:33:00 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_all_cmd	*creat_list(char *str)
 		add_back_lst(&lst, tmp);
 		i++;
 	}
+	if (!del_space(&lst))
+		return (0);
 	return (lst);
 }
 
@@ -59,39 +61,17 @@ int	check_forbidden_char(t_all_cmd **lst)
 	return (!(simple_quote % 2 || double_quote % 2));
 }
 
-int	del_space(t_all_cmd **lst)
-{
-	t_all_cmd	*tmp;
-
-	tmp = *lst;
-	while (tmp)
-	{
-		tmp->initial_cmd = ft_strtrim(tmp->initial_cmd, " ");
-		if (!tmp->initial_cmd)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-void	print_list(t_all_cmd **lst)
-{
-	t_all_cmd	*tmp;
-
-	tmp = *lst;
-	while (tmp)
-	{
-		printf("%s\n", tmp->initial_cmd);
-		tmp = tmp->next;
-	}
-}
-
 int	start_parsing(t_all_cmd **lst, t_env *env)
 {
-	if (!del_space(lst))
-		return (0);
 	if (!check_forbidden_char(lst))
 		return (printf("syntax error\n"), 0);
-	replace_variable_without_quote(lst, env);
+	if (!check_impossible_cmd(lst))
+		return (0);
+	if (!replace_all_variable(lst, env))
+		return (0);
+	if (!creat_all_piped_list(lst))
+		return (0);
+	if (!check_all_redir(lst))
+		return (0);
 	return (1);
 }

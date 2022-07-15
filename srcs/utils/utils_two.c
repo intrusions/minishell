@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_utils_env.c                                    :+:      :+:    :+:   */
+/*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/14 04:52:24 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/15 02:18:31 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/15 05:28:05 by jucheval          #+#    #+#             */
+/*   Updated: 2022/07/15 05:28:32 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*new_env_lst(char *name, char *content)
+int	del_space(t_all_cmd **lst)
 {
-	t_env	*new;
+	t_all_cmd	*tmp;
 
-	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->name = name;
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}
-
-void	add_back_env_lst(t_env **lst, t_env *new)
-{
-	t_env	*tmp;
-
-	if (*lst)
+	tmp = *lst;
+	while (tmp)
 	{
-		tmp = *lst;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
+		tmp->initial_cmd = ft_strtrim(tmp->initial_cmd, " ");
+		if (!tmp->initial_cmd)
+			return (0);
+		tmp = tmp->next;
 	}
-	else if (lst)
-		*lst = new;
+	return (1);
 }

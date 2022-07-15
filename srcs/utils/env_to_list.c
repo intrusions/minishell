@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 01:06:51 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/14 04:51:59 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/15 02:18:31 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_env	*env_to_list(char **envp)
 		return (NULL);
 	i = -1;
 	while (envp[++i])
-		add_back_lst_env(\
-		&env, new_lst_env(get_name(envp[i]), get_content(envp[i])));
+		add_back_env_lst(\
+		&env, new_env_lst(get_name(envp[i]), get_content(envp[i])));
 	return (env);
 }

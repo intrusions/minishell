@@ -1,5 +1,6 @@
 SRCS		=	minishell.c										\
 				srcs/utils/utils.c 								\
+				srcs/utils/utils_two.c							\
 				srcs/utils/lst_utils.c 							\
 				srcs/utils/lst_utils_env.c 						\
 				srcs/utils/env_to_list.c 						\
@@ -7,6 +8,9 @@ SRCS		=	minishell.c										\
 				srcs/utils/ft_strtrim.c 						\
 				srcs/parsing/start_parsing.c 					\
 				srcs/parsing/replace_variable.c 				\
+				srcs/parsing/impossible_cmd.c 					\
+				srcs/parsing/creat_piped_list.c 				\
+				srcs/parsing/check_redirection.c				\
 
 OBJS		=	$(SRCS:.c=.o)
 
