@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 22:12:26 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/15 05:36:06 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 16:46:49 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ t_env		*env_to_list(char **envp);
 int			start_parsing(t_all_cmd **lst, t_env *env);
 // Creat chained list, with command typed in stdin, splited by " ; "
 t_all_cmd	*creat_list(char *str);
+// Check if quote are not closed, " ; " or " \ " , " and turn neg in quote
+int			check_syntax_error(char *str);
 // Function de delete all space at the start and the end of all cmd in the list
 int			del_space(t_all_cmd **lst);
 // Function de delete all space at the start and the end of all cmd in the list
 int			del_piped_space(t_piped *lst);
-// Function to check if all quote are x2, and check if an " \ " are present in
-int			check_forbidden_char(t_all_cmd **lst);
 // Function to replace variable by their value
 int			replace_all_variable(t_all_cmd **lst, t_env *env);
 // Function to replace environement variable without quote
@@ -106,6 +106,10 @@ int			check_triple_redir_right(t_all_cmd **lst);
 // Function to check if triple redir is present in one link
 int			check_triple_redir_by_pipe_right(char *str);
 
+
+int del_double_quotes(t_all_cmd ** lst);
+
+
 // ========================================================================= //
 //                                   Utils                                   //
 // ========================================================================= //
@@ -118,6 +122,8 @@ size_t		ft_strlen(const char *s);
 char		**ft_split(char const *str, char c);
 char		*ft_strtrim(const char *s1, const char *set);
 int			ft_isalnum(int c);
+void		replace_negativ_char_piped(t_piped *lst);
+void		replace_negativ_char_cmd(t_all_cmd **lst);
 
 // Chained list
 t_env		*new_env_lst(char *name, char *content);

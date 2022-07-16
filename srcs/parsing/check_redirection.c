@@ -6,11 +6,23 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 05:04:18 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/15 05:35:54 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 13:49:13 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	next_is_redir(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] == ' ')
+		i++;
+	if (str[i] == '>')
+		return (1);
+	return (0);
+}
 
 int	check_triple_redir_by_pipe_right(char *str)
 {
@@ -29,6 +41,8 @@ int	check_triple_redir_by_pipe_right(char *str)
 				i++;
 			if (str[i] == '>')
 				nb_redir++;
+			else
+				nb_redir = 0;
 		}
 		i++;
 	}

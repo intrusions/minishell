@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 23:23:05 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/15 05:31:56 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 16:16:04 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,51 @@ char	*string_with_var_value(char *cmd, char *name, int size_old_var)
 	return (dest);
 }
 
-int	replace_variable_without_quote(t_all_cmd **lst, t_env *env)
+void	parse_dollars(t_all_cmd **lst)
+{
+	t_all_cmd	*tmp;
+	int			i;
+	int			quote;
+
+	i = 0;
+	tmp = *lst;
+	quote = 0;
+	while (tmp)
+	{
+		while (tmp->initial_cmd[i])
+		{
+			if (tmp->initial_cmd[i] == '\'' && quote == 1)
+				quote = 0;
+			else if (tmp->initial_cmd[i] == '\'' && quote == 0)
+				quote = 1;
+			if (tmp->initial_cmd[i] == '\"' && quote == 2)
+				quote = 0;
+			else if (tmp->initial_cmd[i] == '\"' && quote == 0)
+				quote = 2;
+
+			if (tmp->initial_cmd[i] == '$' && quote == 1)
+				tmp->initial_cmd[i] *= -1;
+			i++;
+		}
+		tmp = tmp->next;
+	}
+}
+
+int	replace_variable(t_all_cmd **lst, t_env *env)
 {
 	int			i;
 	int			j;
-	int			simple_quote;
 	char		*variable_name;
 	t_all_cmd	*tmp;
 
 	tmp = *lst;
 	while (tmp)
 	{
-		simple_quote = 0;
 		j = 0;
 		i = 0;
 		while (tmp->initial_cmd[i])
 		{
-			if (tmp->initial_cmd[i] == '\'')
-				simple_quote++;
-			if (tmp->initial_cmd[i] == '$' && simple_quote % 2 == 0)
+			if (tmp->initial_cmd[i] == '$')
 			{
 				while (tmp->initial_cmd[i] && ft_isalnum(tmp->initial_cmd[i]))
 				{
@@ -97,7 +123,9 @@ int	replace_variable_without_quote(t_all_cmd **lst, t_env *env)
 
 int	replace_all_variable(t_all_cmd **lst, t_env *env)
 {
-	if (!replace_variable_without_quote(lst, env))
+	parse_dollars(lst);
+	if (!replace_variable(lst, env))
 		return (0);
+	replace_negativ_char_cmd(lst);
 	return (1);
 }
