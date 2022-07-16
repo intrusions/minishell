@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 05:28:05 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 13:21:42 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 18:48:48 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,34 @@ void	replace_negativ_char_piped(t_piped *lst)
 			i++;
 		}
 		lst = lst->next;
+	}
+}
+
+void	parse_dollars(t_all_cmd **lst)
+{
+	t_all_cmd	*tmp;
+	int			i;
+	int			quote;
+
+	i = 0;
+	tmp = *lst;
+	quote = 0;
+	while (tmp)
+	{
+		while (tmp->initial_cmd[i])
+		{
+			if (tmp->initial_cmd[i] == '\'' && quote == 1)
+				quote = 0;
+			else if (tmp->initial_cmd[i] == '\'' && quote == 0)
+				quote = 1;
+			if (tmp->initial_cmd[i] == '\"' && quote == 2)
+				quote = 0;
+			else if (tmp->initial_cmd[i] == '\"' && quote == 0)
+				quote = 2;
+			if (tmp->initial_cmd[i] == '$' && quote == 1)
+				tmp->initial_cmd[i] *= -1;
+			i++;
+		}
+		tmp = tmp->next;
 	}
 }

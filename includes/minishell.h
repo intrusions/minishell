@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 22:12:26 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 16:46:49 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 19:04:51 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,8 @@ int			check_all_redir(t_all_cmd **lst);
 int			check_triple_redir_right(t_all_cmd **lst);
 // Function to check if triple redir is present in one link
 int			check_triple_redir_by_pipe_right(char *str);
-
-
-int del_double_quotes(t_all_cmd ** lst);
-
+// Function to delete double quote in command
+int			del_quotes(t_all_cmd **lst);
 
 // ========================================================================= //
 //                                   Utils                                   //
@@ -124,6 +122,7 @@ char		*ft_strtrim(const char *s1, const char *set);
 int			ft_isalnum(int c);
 void		replace_negativ_char_piped(t_piped *lst);
 void		replace_negativ_char_cmd(t_all_cmd **lst);
+void		parse_dollars(t_all_cmd **lst);
 
 // Chained list
 t_env		*new_env_lst(char *name, char *content);

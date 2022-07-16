@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 23:23:05 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 16:16:04 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 18:48:36 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,68 +51,49 @@ char	*string_with_var_value(char *cmd, char *name, int size_old_var)
 	return (dest);
 }
 
-void	parse_dollars(t_all_cmd **lst)
+char	*replace_one_variable(char *str, t_env *env, int i)
 {
-	t_all_cmd	*tmp;
-	int			i;
-	int			quote;
+	int		j;
+	char	*variable_name;
 
-	i = 0;
-	tmp = *lst;
-	quote = 0;
-	while (tmp)
+	j = 0;
+	while (str[i] && ft_isalnum(str[i]))
 	{
-		while (tmp->initial_cmd[i])
-		{
-			if (tmp->initial_cmd[i] == '\'' && quote == 1)
-				quote = 0;
-			else if (tmp->initial_cmd[i] == '\'' && quote == 0)
-				quote = 1;
-			if (tmp->initial_cmd[i] == '\"' && quote == 2)
-				quote = 0;
-			else if (tmp->initial_cmd[i] == '\"' && quote == 0)
-				quote = 2;
-
-			if (tmp->initial_cmd[i] == '$' && quote == 1)
-				tmp->initial_cmd[i] *= -1;
-			i++;
-		}
-		tmp = tmp->next;
+		i++;
+		j++;
 	}
+	variable_name = malloc(sizeof(char) * (j + 1));
+	if (!variable_name)
+		return (NULL);
+	i -= j;
+	j = 0;
+	while (str[i] && ft_isalnum(str[i]))
+		variable_name[j++] = str[i++];
+	variable_name[j] = 0;
+	variable_name = find_variable_value(variable_name, env);
+	if (!variable_name)
+		return (0);
+	str = string_with_var_value(str, variable_name, j);
+	return (str);
 }
 
 int	replace_variable(t_all_cmd **lst, t_env *env)
 {
 	int			i;
-	int			j;
-	char		*variable_name;
 	t_all_cmd	*tmp;
 
 	tmp = *lst;
 	while (tmp)
 	{
-		j = 0;
 		i = 0;
 		while (tmp->initial_cmd[i])
 		{
 			if (tmp->initial_cmd[i] == '$')
 			{
-				while (tmp->initial_cmd[i] && ft_isalnum(tmp->initial_cmd[i]))
-				{
-					i++;
-					j++;
-				}
-				variable_name = malloc(sizeof(char) * (j + 1));
-				if (!variable_name)
+				tmp->initial_cmd = \
+				replace_one_variable(tmp->initial_cmd, env, i);
+				if (!tmp->initial_cmd)
 					return (0);
-				i -= j;
-				j = 0;
-				while (tmp->initial_cmd[i] && ft_isalnum(tmp->initial_cmd[i]))
-					variable_name[j++] = tmp->initial_cmd[i++];
-				variable_name[j] = 0;
-				variable_name = find_variable_value(variable_name, env);
-				tmp->initial_cmd = string_with_var_value(\
-				tmp->initial_cmd, variable_name, j);
 			}
 			i++;
 		}

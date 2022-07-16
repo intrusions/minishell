@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 05:04:18 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 13:49:13 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/16 18:08:56 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	check_triple_redir_right(t_all_cmd **lst)
 		tmp_piped = (*lst)->cmd_cuted;
 		while (tmp_piped)
 		{
-			if (!check_triple_redir_by_pipe_right(tmp->cmd_cuted->cmd_cuted_by_pipe))
+			if (!check_triple_redir_by_pipe_right(tmp->\
+			cmd_cuted->cmd_cuted_by_pipe))
 				return (0);
 			tmp_piped = tmp_piped->next;
 		}
