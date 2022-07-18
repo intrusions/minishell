@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 21:03:24 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 19:04:51 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/18 20:23:17 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	start_parsing(t_all_cmd **lst, t_env *env)
 		return (0);
 	if (!del_quotes(lst))
 		return (0);
-	if (!check_all_redir(lst))
-		return (0);
+	// if (!check_all_redir(lst))
+	// 	return (0);
 	return (1);
 }

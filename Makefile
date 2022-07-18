@@ -13,6 +13,7 @@ SRCS		=	minishell.c										\
 				srcs/parsing/creat_piped_list.c 				\
 				srcs/parsing/check_redirection.c				\
 				srcs/parsing/delete_double_quotes.c				\
+				srcs/parsing/delete_all_space.c					\
 
 OBJS		=	$(SRCS:.c=.o)
 

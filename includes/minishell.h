@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 22:12:26 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 19:04:51 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/18 20:23:45 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int			check_triple_redir_right(t_all_cmd **lst);
 int			check_triple_redir_by_pipe_right(char *str);
 // Function to delete double quote in command
 int			del_quotes(t_all_cmd **lst);
+// Function de delete all useless space in command
+int			delete_all_space(t_all_cmd **lst);
 
 // ========================================================================= //
 //                                   Utils                                   //
