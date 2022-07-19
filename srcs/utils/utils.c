@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xel <xel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 22:30:56 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/18 20:19:46 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/19 12:08:30 by xel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,21 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-void	print_list(t_all_cmd **lst)
+void	print_list(t_cmd *cmd)
 {
-	t_all_cmd	*tmp;
+	t_piped		*tmp;
 	int			i;
 	int			j;
 
 	i = 1;
-	tmp = *lst;
+	j = 1;
+	tmp = cmd->cmd_cuted;
+	printf("Initial command :%s:\n", cmd->initial_cmd);
 	while (tmp)
 	{
-		j = 1;
-		printf("Le maillon %d de la chaine t_all_cmd (spliter par des \";\") :%s:\n", i, tmp->initial_cmd);
-		while (tmp->cmd_cuted)
-		{
-			printf("Le maillon %d de la chaine t_piped (spliter par des \"|\")   :%s:\n", j, tmp->cmd_cuted->cmd_cuted_by_pipe);
-			tmp->cmd_cuted = tmp->cmd_cuted->next;
-			j++;
-		}
-		i++;
+		printf("Le maillon %d de la chaine t_piped (spliter par des \"|\")   :%s:\n", j, tmp->cmd_cuted_by_pipe);
 		tmp = tmp->next;
+		j++;
 	}
+	i++;
 }

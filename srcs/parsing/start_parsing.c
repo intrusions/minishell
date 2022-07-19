@@ -3,26 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   start_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xel <xel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 21:03:24 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/18 22:16:28 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/19 13:51:10 by xel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	start_parsing(t_all_cmd **lst, t_env *env)
+int	start_parsing(t_cmd *cmd, t_env *env)
 {
-	if (!check_impossible_cmd(lst))
+	if (!check_syntax_error(cmd->initial_cmd))
+		return (printf("syntax error\n"), 0);
+	if (!delete_all_space(cmd))
 		return (0);
-	if (!replace_all_variable(lst, env))
+	if (!check_impossible_cmd(cmd))
+		return (printf("syntax error\n"), 0);
+	if (!replace_all_variable(cmd, env))
 		return (0);
-	if (!creat_all_piped_list(lst))
+	if (!creat_all_piped_list(cmd))
 		return (0);
-	if (!check_all_redir(lst))
-		return (0);
-	if (!del_quotes(lst))
+	if (!del_quotes(cmd))
 		return (0);
 	return (1);
 }

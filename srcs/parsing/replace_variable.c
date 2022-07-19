@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xel <xel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 23:23:05 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/16 18:48:36 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/19 12:02:54 by xel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,36 +77,30 @@ char	*replace_one_variable(char *str, t_env *env, int i)
 	return (str);
 }
 
-int	replace_variable(t_all_cmd **lst, t_env *env)
+int	replace_variable(t_cmd *cmd, t_env *env)
 {
 	int			i;
-	t_all_cmd	*tmp;
 
-	tmp = *lst;
-	while (tmp)
+	i = 0;
+	while (cmd->initial_cmd[i])
 	{
-		i = 0;
-		while (tmp->initial_cmd[i])
+		if (cmd->initial_cmd[i] == '$')
 		{
-			if (tmp->initial_cmd[i] == '$')
-			{
-				tmp->initial_cmd = \
-				replace_one_variable(tmp->initial_cmd, env, i);
-				if (!tmp->initial_cmd)
-					return (0);
-			}
-			i++;
+			cmd->initial_cmd = \
+			replace_one_variable(cmd->initial_cmd, env, i);
+			if (!cmd->initial_cmd[i])
+				return (0);
 		}
-		tmp = tmp->next;
+		i++;
 	}
 	return (1);
 }
 
-int	replace_all_variable(t_all_cmd **lst, t_env *env)
+int	replace_all_variable(t_cmd *cmd, t_env *env)
 {
-	parse_dollars(lst);
-	if (!replace_variable(lst, env))
+	parse_dollars(cmd);
+	if (!replace_variable(cmd, env))
 		return (0);
-	replace_negativ_char_cmd(lst);
+	replace_negativ_char(cmd->initial_cmd);
 	return (1);
 }

@@ -3,41 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   delete_all_space.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xel <xel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 18:45:06 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/18 20:22:50 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/19 13:50:30 by xel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	turn_negativ_space(t_all_cmd **lst)
+void	turn_negativ_space(t_cmd *cmd)
 {
-	t_all_cmd	*tmp;
 	int			quote;
 	int			i;
 
 	i = 0;
 	quote = 0;
-	tmp = *lst;
-	while (tmp)
+	while (cmd->initial_cmd[i])
 	{
-		while (tmp->initial_cmd[i])
-		{
-			if (tmp->initial_cmd[i] == '\'' && quote == 1)
-				quote = 0;
-			else if (tmp->initial_cmd[i] == '\'' && quote == 0)
-				quote = 1;
-			if (tmp->initial_cmd[i] == '\"' && quote == 2)
-				quote = 0;
-			else if (tmp->initial_cmd[i] == '\"' && quote == 0)
-				quote = 2;
-			if (tmp->initial_cmd[i] == ' ' && quote)
-				tmp->initial_cmd[i] *= -1;
-			i++;
-		}
-		tmp = tmp->next;
+		quote = what_state(cmd->initial_cmd, i);
+		if (cmd->initial_cmd[i] == ' ' && quote)
+			cmd->initial_cmd[i] *= -1;
+		i++;
 	}
 }
 
@@ -85,15 +72,17 @@ char	*concat_string_splitted(char **split)
 	return (dest);
 }
 
-int	delete_all_space(t_all_cmd **lst)
+int	delete_all_space(t_cmd *cmd)
 {
-	t_all_cmd	*tmp;
-	char		**split;
+	char	**split;
 
-	tmp = *lst;
-	turn_negativ_space(lst);
-	split = ft_split(tmp->initial_cmd, ' ');
-	tmp->initial_cmd = concat_string_splitted(split);
-	replace_negativ_char_cmd(lst);
+	turn_negativ_space(cmd);
+	split = ft_split(cmd->initial_cmd, ' ');
+	if (!split)
+		return (0);
+	cmd->initial_cmd = concat_string_splitted(split);
+	if (!cmd->initial_cmd)
+		return (0);
+	replace_negativ_char(cmd->initial_cmd);
 	return (1);
 }
