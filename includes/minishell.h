@@ -6,7 +6,7 @@
 /*   By: xel <xel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 22:12:26 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/19 13:51:29 by xel              ###   ########.fr       */
+/*   Updated: 2022/07/19 23:40:13 by xel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,15 @@ int			del_quotes(t_cmd *cmd);
 int			delete_all_space(t_cmd *cmd);
 // Function to know in what state we are
 int			what_state(char *str, int j);
-//
+// Function to check if a quote are not closed
 int			check_syntax_error(char *str);
+// Impossible command
+int			last_char_redir(char *str);
+int			redir_oppose_two(char *str);
+int			redir_oppose_one(char *str);
+int			check_multiple_pipe(char *str);
+int			pipe_with_redir_after(char *str);
+int			pipe_with_redir_before(char *str);
 
 // ========================================================================= //
 //                                   Utils                                   //

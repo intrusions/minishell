@@ -10,6 +10,7 @@ SRCS		=	minishell.c										\
 				srcs/parsing/start_parsing.c 					\
 				srcs/parsing/replace_variable.c 				\
 				srcs/parsing/impossible_cmd.c 					\
+				srcs/parsing/impossible_cmd_two.c 				\
 				srcs/parsing/creat_piped_list.c 				\
 				srcs/parsing/delete_quotes.c					\
 				srcs/parsing/delete_all_space.c					\
