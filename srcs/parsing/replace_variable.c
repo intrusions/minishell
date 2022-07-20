@@ -74,6 +74,8 @@ char	*replace_one_variable(char *str, t_env *env, int i)
 	if (!variable_name)
 		return (0);
 	str = string_with_var_value(str, variable_name, j);
+	if (!str)
+		return (NULL);
 	return (str);
 }
 
@@ -88,7 +90,7 @@ int	replace_variable(t_cmd *cmd, t_env *env)
 		{
 			cmd->initial_cmd = \
 			replace_one_variable(cmd->initial_cmd, env, i);
-			if (!cmd->initial_cmd[i])
+			if (!cmd->initial_cmd)
 				return (0);
 		}
 		i++;

@@ -29,9 +29,9 @@ void	replace_negativ_char_piped(t_piped *lst)
 {
 	int		i;
 
-	i = 0;
 	while (lst)
 	{
+		i = 0;
 		while (lst->cmd_cuted_by_pipe[i])
 		{
 			if (lst->cmd_cuted_by_pipe[i] < 0)

@@ -99,6 +99,8 @@ char	**ft_split(char const *str, char c)
 	char	**dest;
 	int		word;
 
+	if (!str[0])
+		return (NULL);
 	word = ft_is_word(str, c);
 	dest = malloc(sizeof(char *) * (word + 1));
 	if (!dest)

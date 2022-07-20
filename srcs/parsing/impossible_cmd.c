@@ -136,5 +136,7 @@ int	check_impossible_cmd(t_cmd *cmd)
 		return (printf("cest opposer two\n"), 0);
 	if (!last_char_redir(cmd->initial_cmd))
 		return (printf("last char redir\n"), 0);
+	if (!first_char_redir(cmd->initial_cmd))
+		return (printf("first char redir\n"), 0);
 	return (1);
 }

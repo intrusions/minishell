@@ -67,3 +67,8 @@ int	last_char_redir(char *str)
 		return (0);
 	return (1);
 }
+
+int	first_char_redir(char *str)
+{
+	return (!(str[0] == '>') && !(str[0] == '|'));
+}

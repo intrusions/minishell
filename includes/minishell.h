@@ -76,7 +76,7 @@ int			start_parsing(t_cmd *cmd, t_env *env);
 int			del_piped_space(t_piped *lst);
 // Function to replace variable by their value
 int			replace_all_variable(t_cmd *cmd, t_env *env);
-// Function to creat a new string replacing $variable with his value 
+// Function to creat a new string replacing $variable with his value
 char		*string_with_var_value(char *cmd, char *name, int size_old_var);
 // Function to find the value in environement variable with only his name
 char		*find_variable_value(char *name, t_env *env);
@@ -102,6 +102,7 @@ int			what_state(char *str, int j);
 int			check_syntax_error(char *str);
 // Impossible command
 int			last_char_redir(char *str);
+int			first_char_redir(char *str);
 int			redir_oppose_two(char *str);
 int			redir_oppose_one(char *str);
 int			check_multiple_pipe(char *str);
