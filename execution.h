@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimrod <nimrod@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:10:49 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/08 08:34:45 by nimrod           ###   ########.fr       */
+/*   Updated: 2022/07/25 01:06:16 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
+
+// ========================================================================= //
+//                                   Library                                 //
+// ========================================================================= //
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -23,24 +27,41 @@
 # include "./libft/libft.h"
 # include "errno.h"
 
-# define CMD_NOT_FOUND 1
-# define NO_FILE 2
-# define WRONG_CHMOD 3
+// ========================================================================= //
+//                                    Enum                                   //
+// ========================================================================= //
 
-# define APPEND 1
-# define WRITE 2
-# define HEREDOC 3
-# define READ 4
-# define PIPE 5
-# define WORD 6
-# define BEGIN 7
+typedef enum e_exec
+{
+	CMD_NOT_FOUND = 1,
+	NO_FILE,
+	WRONG_CHMOD,
+}	t_enum_exec;
 
-# define NEUTRAL_MODE 0
-# define R_REDIR_MODE 1
-# define L_REDIR_MODE 2
-# define WORD_MODE 3
-# define DQUOTE_MODE 4
-# define SQUOTE_MODE 5
+typedef enum e_type
+{
+	APPEND = 1,
+	WRITE,
+	HEREDOC,
+	READ,
+	PIPE,
+	WORD,
+	BEGIN,
+}	t_enum_type;
+
+typedef enum e_mode
+{
+	NEUTRAL_MODE = 1,
+	R_REDIR_MODE,
+	L_REDIR_MODE,
+	WORD_MODE,
+	DQUOTE_MODE,
+	SQUOTE_MODE,
+}	t_enum_mode;
+
+// ========================================================================= //
+//                                Structure                                  //
+// ========================================================================= //
 
 typedef struct s_first {
 	int type;
@@ -207,5 +228,49 @@ char	*ft_strjoin(char const *s1, char const *s2);
 t_command	*step_two(t_first *uno, t_env *env);
 bool command_validation(t_first *uno);
 bool	parse_argument(t_command *cmd);
+
+// ========================================================================= //
+//                                 Parsing                                   //
+// ========================================================================= //
+
+// parsing/expand/expand.c
+int		replace_all_variable(t_command *cmd, t_env *env);
+int		replace_variable(t_command *cmd, t_env *env);
+char	*replace_one_variable(char *str, t_env *env, int i);
+char	*string_with_var_value(char *cmd, char *name, int size_old_var);
+char	*find_variable_value(char *name, t_env *env);
+
+// parsing/expand/expand_utils.c
+void	parse_dollars(t_command *cmd);
+int		what_state(char *str, int j);
+int		ft_isalnum(int c);
+void	replace_negativ_char(t_command *cmd);
+
+// parsing/parsing_cmd/command_validation.c
+bool    redirection_validation(t_first *uno);
+bool    pipes_validation(t_first *uno);
+bool	command_validation(t_first *uno);
+
+// parsing/parsing_cmd/step_two.c
+t_command	*new_cmd(t_env *env);
+void		add_back_cmd(t_command **cmd, t_command *new);
+t_token		*new_tkn(char *arg, int type);
+void		add_back_tkn(t_token **tkn, t_token *new);
+t_command	*step_two(t_first *uno, t_env *env);
+
+// parsing/parsing_lexer/step_one.c
+t_first		*step_one(char *str);
+int			lexer_id_three(t_first **uno, char *str, int *mode, int *i);
+int			lexer_id_two(t_first **uno, char *str, int *mode);
+int			lexer_id_one(char c, int *mode);
+
+// parsing/parsing_lexer/step_one_utils.c
+void		print_step_one(t_first *uno);
+void		add_back_uno(t_first **uno, t_first *new);
+t_first		*new_uno(int type, char *content);
+char 		*alloc_content(char *str, unsigned int size);
+int 		actual_mode(char c);
+
+
 
 #endif

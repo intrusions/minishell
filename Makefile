@@ -23,30 +23,35 @@ SRCS			=	./groshell.c \
 					./utils/libft_plus.c \
 					./utils/printing.c \
 					./tmp_libft/libft.c \
-					./parsing_lexer/step_one.c \
-					./parsing_lexer/step_one_utils.c \
-					./parsing_cmd/step_two.c \
-					./parsing_cmd/command_validation.c \
+					./parsing/parsing_lexer/step_one.c \
+					./parsing/parsing_lexer/step_one_utils.c \
+					./parsing/parsing_cmd/step_two.c \
+					./parsing/parsing_cmd/command_validation.c \
+					./parsing/expand/expand.c \
+					./parsing/expand/expand_utils.c \
 					
 
 OBJS			= 	$(SRCS:.c=.o)
 
-# LIBS			=  -L ./libft -lft
-
 CC				= 	gcc
+
 RM				= 	rm -f
+
 CFLAGS			= 	-Wall -Wextra -Werror
 
-all:			$(OBJS)
-				gcc $(CFLAGS) -g3 $(OBJS)
+NAME			= 	minishell
+
+all:		$(NAME)
+
+$(NAME):	$(OBJS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME) $(TH_FLAGS)
 
 clean:
-				$(RM) $(OBJS)
-				$(RM) $(OBJS_BONUS)
+	$(RM) $(OBJS)
 
-fclean:			clean
-				$(RM) $(NAME) $(OBJS) a.out
+fclean:		clean
+	$(RM) $(NAME)
 
-re:				all
+re:		fclean $(NAME)
 
-.PHONY:			all clean fclean re bonus
+.PHONY:		all clean fclean re

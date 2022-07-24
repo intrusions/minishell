@@ -1,4 +1,16 @@
-#include "../execution.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_validation.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/24 22:29:37 by jucheval          #+#    #+#             */
+/*   Updated: 2022/07/24 22:32:16 by jucheval         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../execution.h"
 
 /*
 Error case : 
@@ -48,9 +60,9 @@ bool    pipes_validation(t_first *uno)
 
 bool command_validation(t_first *uno)
 {
-    if (redirection_validation(uno) == 0)
+    if (!redirection_validation(uno))
         return (write(1, "syntax error\n", 13), 0);
-    if (pipes_validation(uno) == 0)
+    if (!pipes_validation(uno))
         return (write(1, "syntax error\n", 13), 0);
     return (1);
 }
