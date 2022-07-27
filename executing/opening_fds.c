@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opening_fds.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimrod <nimrod@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:28:17 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/07 18:09:22 by nimrod           ###   ########.fr       */
+/*   Updated: 2022/07/25 01:34:40 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	opening_append(char *content)
 	int	fd;
 
 	content = ft_strtrim(content, "> ");
-	if (access(content, F_OK) == 0)
+	if (!access(content, F_OK))
 	{
 		if (access(content, W_OK) == -1)
 			return (writing("can't write the file", " "), -1);
@@ -33,7 +33,7 @@ int	opening_standard_output(char *content)
 	int	fd;
 
 	content = ft_strtrim(content, "> ");
-	if (access(content, F_OK) == 0)
+	if (!access(content, F_OK))
 	{
 		if (access(content, W_OK) == -1)
 			return (writing("can't write the file", " "), -1);
@@ -58,7 +58,7 @@ int	opening_standard_input(char *content)
 	int	fd;
 
 	content = ft_strtrim(content, "< ");
-	if (access(content, F_OK) == 0)
+	if (!access(content, F_OK))
 	{
 		if (access(content, R_OK) == -1)
 			return (writing("can't read the file", " "), -1);

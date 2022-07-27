@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:22:08 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/24 22:29:00 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/27 00:58:44 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,14 @@ int	working_magic(char *str, t_env **env)
 	t_first		*uno;
 	t_env		*tmp;
 
-	uno = step_one(str);
+	uno = lexer(str);
 	if (uno->next)
 	{
-		// print_step_one(uno);
-		if (command_validation(uno))
+		if (parser(uno))
 		{
 			cmd = step_two(uno, *env);
 			if (cmd)
 			{
-				// print_all(cmd);
 				if (!replace_all_variable(cmd, *env))
 					return (0);
 				tmp = exec_command(cmd);

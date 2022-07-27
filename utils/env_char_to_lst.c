@@ -6,52 +6,11 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 01:06:51 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/23 22:28:34 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/27 02:59:50 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
-
-t_env	*new_lst(char *name, char *content)
-{
-	t_env	*new;
-
-	new = (t_env *)malloc(sizeof(t_env));
-	if (new == NULL)
-		return (NULL);
-	new->name = name;
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}
-
-t_env	*new_env_lst(char *name, char *content)
-{
-	t_env	*new;
-
-	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->name = name;
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}
-
-void	add_back_env_lst(t_env **lst, t_env *new)
-{
-	t_env	*tmp;
-
-	if (*lst)
-	{
-		tmp = *lst;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-	else if (lst)
-		*lst = new;
-}
 
 char	*get_content(char *envp)
 {

@@ -1,11 +1,12 @@
 SRCS			=	./groshell.c \
-					./builts/cd.c \
-					./builts/echo.c \
-					./builts/env.c \
-					./builts/exit.c \
-					./builts/export.c \
-					./builts/pwd.c \
-					./builts/unset.c \
+					./executing/builts/cd.c \
+					./executing/builts/echo.c \
+					./executing/builts/env.c \
+					./executing/builts/exit.c \
+					./executing/builts/export.c \
+					./executing/builts/export_utils.c \
+					./executing/builts/pwd.c \
+					./executing/builts/unset.c \
 					./executing/builtsing_fork.c \
 					./executing/builtsing_nofork.c \
 					./executing/executing.c \
@@ -13,22 +14,25 @@ SRCS			=	./groshell.c \
 					./executing/opening_fds.c \
 					./executing/parsing_arg.c \
 					./executing/redirecting.c \
+					./executing/redirecting_utils.c \
 					./executing/parsing_arg_new.c \
-					./parsing/creating_tkn_cmd.c \
-					./parsing/environning.c \
-					./parsing/parsing_spliting.c \
+					./parsing/parser/parsing_spliting.c \
 					./utils/env_char_to_lst.c \
+					./utils/env_char_to_lst_utils.c \
 					./utils/env_lst_to_char.c \
 					./utils/freeing.c \
-					./utils/libft_plus.c \
-					./utils/printing.c \
-					./tmp_libft/libft.c \
-					./parsing/parsing_lexer/step_one.c \
-					./parsing/parsing_lexer/step_one_utils.c \
-					./parsing/parsing_cmd/step_two.c \
-					./parsing/parsing_cmd/command_validation.c \
-					./parsing/expand/expand.c \
-					./parsing/expand/expand_utils.c \
+					./utils/ft_split.c \
+					./utils/utils_one.c \
+					./utils/utils_two.c \
+					./utils/utils_three.c \
+					./utils/utils_four.c \
+					./parsing/lexer/lexer.c \
+					./parsing/lexer/lexer_utils.c \
+					./parsing/lexer/lexer_utils_two.c \
+					./parsing/parser/parser.c \
+					./parsing/parser/parser_utils.c \
+					./parsing/expander/expand.c \
+					./parsing/expander/expand_utils.c \
 					
 
 OBJS			= 	$(SRCS:.c=.o)

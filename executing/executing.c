@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimrod <nimrod@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:10:15 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/08 08:34:34 by nimrod           ###   ########.fr       */
+/*   Updated: 2022/07/27 02:33:23 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	closing_fd(t_command *cmd)
 	t_command	*tmp;
 
 	tmp = cmd;
-	while (tmp != NULL)
+	while (tmp)
 	{
-		if (tmp->fd_in != 0 && tmp->fd_in != 1)
+		if (tmp->fd_in && tmp->fd_in != 1)
 			close(tmp->fd_in);
-		if (tmp->fd_out != 0 && tmp->fd_out != 1)
+		if (tmp->fd_out && tmp->fd_out != 1)
 			close(tmp->fd_out);
 		tmp = tmp->next;
 	}
@@ -32,9 +32,9 @@ void	waitpiding(t_command *cmd)
 	t_command	*tmp;
 
 	tmp = cmd;
-	while (tmp != NULL)
+	while (tmp)
 	{
-		if (tmp->arg != NULL)
+		if (tmp->arg)
 			waitpid(tmp->arg->pid, 0, 0);
 		tmp = tmp->next;
 	}
@@ -47,13 +47,13 @@ t_env	*exec_command(t_command *cmd)
 	if (!cmd)
 		return (NULL);
 	tmp = cmd;
-	if (redirectionning(tmp) == 0)
+	if (!redirectionning(tmp))
 		return (NULL);
-	while (tmp != NULL)
+	while (tmp)
 	{
-		if (parse_argument(tmp) == 0)
+		if (!parse_argument(tmp))
 		{
-			if (tmp != NULL && tmp->next != NULL)
+			if (tmp && tmp->next)
 				tmp->next->fd_in = -1;
 		}
 		else
@@ -68,19 +68,11 @@ t_env	*exec_command(t_command *cmd)
 			else
 				exec_token(tmp);
 		}
-		// print_parsed(cmd);
-		// print_fd(tmp->fd_in);
-		// print_fd(tmp->fd_out);
 		tmp = tmp->next;
-		if (tmp == NULL)
+		if (!tmp)
 			break ;
 	}
 	waitpiding(cmd);
 	closing_fd(cmd);
-	// tmp = cmd;
-	// while (tmp->next != NULL)
-	// 	tmp = tmp->next;
-	// return (tmp->env);
 	return (NULL);
 }
-
