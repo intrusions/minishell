@@ -43,12 +43,14 @@ RM				= 	rm -f
 
 CFLAGS			= 	-Wall -Wextra -Werror
 
+CPP_FLAGS		= 
+
 NAME			= 	minishell
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME) $(TH_FLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -lreadline -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

@@ -106,6 +106,7 @@ int	lexer_id_three(t_first **uno, char *str, int *mode, int *i)
 	}
 	if (*mode != WORD_MODE)
 	{
+		// le bug vien d'ici
 		string = alloc_content(&str[*i], j);
 		if (!string)
 			return (0);
@@ -137,7 +138,8 @@ t_first	*lexer(char *str)
 				break ;
 			if (!lexer_id_two(&uno, &str[i - 1], &mode))
 				break ;
-			lexer_id_three(&uno, str, &mode, &i);
+			if (!lexer_id_three(&uno, str, &mode, &i))
+				break ;
 			break ;
 		}
 	}

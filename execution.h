@@ -6,7 +6,7 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:10:49 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/27 03:09:20 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/27 20:53:27 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "errno.h"
 
 // ========================================================================= //
