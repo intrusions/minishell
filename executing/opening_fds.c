@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opening_fds.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:28:17 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/25 01:34:40 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/30 11:21:11 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	opening_append(char *content)
 	int	fd;
 
 	content = ft_strtrim(content, "> ");
-	if (!access(content, F_OK))
+	if (access(content, F_OK) == 0)
 	{
 		if (access(content, W_OK) == -1)
 			return (writing("can't write the file", " "), -1);
@@ -33,7 +33,7 @@ int	opening_standard_output(char *content)
 	int	fd;
 
 	content = ft_strtrim(content, "> ");
-	if (!access(content, F_OK))
+	if (access(content, F_OK) == 0)
 	{
 		if (access(content, W_OK) == -1)
 			return (writing("can't write the file", " "), -1);
@@ -44,21 +44,12 @@ int	opening_standard_output(char *content)
 	return (fd);
 }
 
-int	opening_heredoc(char *content)
-{
-	int	fd;
-
-	(void)content;
-	fd = open("tmp_file", O_RDWR);
-	return (fd);
-}
-
 int	opening_standard_input(char *content)
 {
 	int	fd;
 
 	content = ft_strtrim(content, "< ");
-	if (!access(content, F_OK))
+	if (access(content, F_OK) == 0)
 	{
 		if (access(content, R_OK) == -1)
 			return (writing("can't read the file", " "), -1);

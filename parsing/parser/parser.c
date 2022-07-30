@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                               :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/24 22:29:37 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/24 22:32:16 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 15:46:55 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/30 15:39:02 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ bool	redirection_validation(t_first *uno)
 	t_first	*tmp;
 
 	tmp = uno->next;
-	while (tmp)
+	while (tmp != NULL)
 	{
-		if (tmp->type == APPEND || tmp->type == WRITE || tmp->type == READ || tmp->type == HEREDOC)
+		if (tmp->type == APPEND || tmp->type == WRITE \
+			|| tmp->type == READ || tmp->type == HEREDOC)
 		{
 			if (!tmp->next || tmp->next->type != WORD)
 				return (0);
@@ -34,9 +35,9 @@ bool	pipes_validation(t_first *uno)
 	t_first	*tmp;
 
 	tmp = uno->next;
-	if (tmp && tmp->type == PIPE)
+	if (tmp != NULL && tmp->type == PIPE)
 		return (0);
-	while (tmp)
+	while (tmp != NULL)
 	{
 		if (tmp->type == PIPE)
 		{
@@ -48,11 +49,11 @@ bool	pipes_validation(t_first *uno)
 	return (1);
 }
 
-bool	parser(t_first *uno)
+bool	command_validation(t_first *uno)
 {
-	if (!redirection_validation(uno))
+	if (redirection_validation(uno) == 0)
 		return (write(1, "syntax error\n", 13), 0);
-	if (!pipes_validation(uno))
+	if (pipes_validation(uno) == 0)
 		return (write(1, "syntax error\n", 13), 0);
 	return (1);
 }

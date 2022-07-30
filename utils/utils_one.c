@@ -3,72 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   utils_one.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/27 00:20:05 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/27 00:22:53 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 15:47:29 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/29 15:47:30 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-int	ft_atoi(const char *str)
+int	strnstr_int(char *str, char *to_find)
 {
-	int			i;
-	int			t;
-	long long	x;
+	int	i;
+	int	j;
 
-	t = 1;
+	if (to_find[0] == '\0')
+		return (0);
 	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+	while (str[i])
+	{
+		j = 0;
+		while (str[i + j] && str[i + j] == to_find[j])
+		{
+			if (to_find[j + 1] == '\0')
+				return (i);
+			j++;
+		}
 		i++;
-	if (str[i] == '-' || str[i] == '+' || str[i] == ' ')
-		if (str[i++] == '-')
-			t = -1;
-	x = 0;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		if (x * t > 2147483647)
-			return (-1);
-		if (x * t < -2147483648)
-			return (0);
-		x = (x * 10) + (str[i++] - '0');
 	}
-	x *= t;
-	return (x);
+	return (0);
 }
 
-char	*ft_strdup(const char *str)
-{
-	char	*ptr;
-	size_t	i;
-	size_t	n;
-
-	n = ft_strlen(str);
-	ptr = (char *) malloc(sizeof(char) * (n + 1));
-	if (ptr == NULL)
-		return (NULL);
-	ptr[n] = '\0';
-	i = 0;
-	while (i < n)
-	{
-			ptr[i] = str[i];
-			i++;
-	}
-	return (ptr);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	n;
-
-	n = 0;
-	while (str[n])
-		n++;
-	return (n);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t			i;
 	unsigned char	*one;
@@ -76,24 +42,33 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 	one = (unsigned char *)s1;
 	two = (unsigned char *)s2;
-	if (n == 0)
-		return (0);
 	i = 0;
-	while (one[i] && two[i] && one[i] == two[i] && i < n - 1)
+	while (one[i] && two[i] && one[i] == two[i])
 		i++;
 	return (one[i] - two[i]);
 }
 
-int	is_set(char c, const char *set)
+char	*ft_strjoin_new(char *s1, char *s2, int flag)
 {
-	int	i;
+	char	*str;
+	int		i;
+	int		j;
 
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
+	if (s1 == NULL && s2 == NULL)
+		return (NULL);
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
+	if (str == NULL)
+		return (free(s1), NULL);
+	i = -1;
+	while (s1[++i])
+		str[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+		str[i++] = s2[j];
+	str[i] = '\0';
+	if (flag == 1 || flag == 2)
+		free(s1);
+	if (flag == 2)
+		free(s2);
+	return (str);
 }

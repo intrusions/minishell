@@ -3,88 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/27 00:18:22 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/27 02:07:44 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 15:47:38 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/29 17:37:38 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-static int	word_start(const char *s1, const char *set)
+int	ft_atoi(const char *str)
 {
-	int	i;
+	int			i;
+	int			t;
+	long long	x;
 
+	t = 1;
 	i = 0;
-	while (is_set(s1[i], set))
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
-	return (i);
+	if (str[i] == '-' || str[i] == '+' || str[i] == ' ')
+		if (str[i++] == '-')
+			t = -1;
+	x = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		if (x * t > 2147483647)
+			return (-1);
+		if (x * t < -2147483648)
+			return (0);
+		x = (x * 10) + (str[i++] - '0');
+	}
+	x *= t;
+	return (x);
 }
 
-static int	word_end(const char *s1, const char *set)
+char	*ft_strdup(const char *str)
 {
-	int	i;
-
-	i = ft_strlen(s1) - 1;
-	while (is_set(s1[i], set))
-		i--;
-	return ((ft_strlen(s1) - (i + 1)));
-}
-
-char	*ft_strtrim(const char *s1, const char *set)
-{
+	char	*ptr;
 	size_t	i;
-	size_t	j;
-	size_t	diff;
-	char	*dest;
+	size_t	n;
 
+	n = ft_strlen(str);
+	ptr = (char *) malloc(sizeof(char) * (n + 1));
+	if (ptr == NULL)
+		return (NULL);
+	ptr[n] = '\0';
 	i = 0;
-	j = 0;
-	if (s1 == NULL || set == NULL)
-		return (NULL);
-	diff = word_start(s1, set) + word_end(s1, set);
-	if (diff == (ft_strlen(s1) * 2))
-		diff = ft_strlen(s1);
-	dest = malloc(sizeof(char) * ((ft_strlen(s1) - diff) + 1));
-	if (dest == NULL)
-		return (NULL);
-	while (is_set(s1[i], set))
-		i++;
-	while (i < (ft_strlen(s1) - word_end(s1, set)))
+	while (i < n)
 	{
-		dest[j] = s1[i];
-		j++;
-		i++;
+			ptr[i] = str[i];
+			i++;
 	}
-	dest[j] = '\0';
-	return (dest);
+	return (ptr);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+size_t	ft_strlen(const char *str)
 {
-	char	*str;
-	int		i;
-	int		j;
+	size_t	n;
 
+	n = 0;
+	while (str[n])
+		n++;
+	return (n);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	*one;
+	unsigned char	*two;
+
+	one = (unsigned char *)s1;
+	two = (unsigned char *)s2;
+	if (n == 0)
+		return (0);
 	i = 0;
-	j = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
-	if (str == NULL)
-		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
+	while (one[i] && two[i] && one[i] == two[i] && i < n - 1)
 		i++;
-	}
-	while (s2[j])
-	{
-		str[i] = s2[j];
-		i++;
-		j++;
-	}
-	str[i] = '\0';
-	return (str);
+	return (one[i] - two[i]);
 }

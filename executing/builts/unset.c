@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/27 12:07:18 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/27 02:32:38 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 17:20:54 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/29 17:24:49 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void	remove_env(char *name, t_env **env)
 
 	tmp = (*env);
 	ptr = tmp;
-	if (tmp && !ft_strcmp(name, tmp->name))
+	if (tmp != NULL && ft_strcmp(name, tmp->name) == 0)
 	{
 		(*env) = tmp->next;
 		free(tmp);
 		tmp = (*env);
 		ptr = (*env);
 	}
-	while (tmp)
-	{
-		if (!ft_strcmp(name, tmp->name))
+	while (tmp != NULL)
+	{	
+		if (ft_strcmp(name, tmp->name) == 0)
 		{
 			ptr->next = tmp->next;
 			free(tmp);

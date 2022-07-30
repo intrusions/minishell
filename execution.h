@@ -6,13 +6,12 @@
 /*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:10:49 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/27 20:53:27 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/31 00:25:05 by jucheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
-
 // ========================================================================= //
 //                                   Library                                 //
 // ========================================================================= //
@@ -122,6 +121,9 @@ char		*export_name(char *str);
 int			check_export(char *str);
 bool		check_equal(char *str);
 bool		is_export(char c);
+void		add_back_env(char *name, char *content, t_env *env);
+void		update_all_envz(t_command *cmd, t_env *env);
+void		add_back_lst(t_env **lst, t_env *new);
 
 // executing/builtsing_fork.c
 bool		check_builts(char **argz);
@@ -178,16 +180,37 @@ char		*replace_one_variable(char *str, t_env *env, int i);
 char		*string_with_var_value(char *cmd, char *name, int size_old_var);
 char		*find_variable_value(char *name, t_env *env);
 
+// parsing/expand/expand_redir_list.c
+int			delete_redir_char_in_redir_list(t_command *cmd);
+int			replace_variable_redir(t_command *cmd, t_env *env);
+
+// parsing/expand/return_value.c
+char		*string_with_return_var_value(char *cmd, char *name, int size_old_var);
+char		*replace_one_return_value(char *str);
+int			replace_return_value(t_command *cmd);
+
 // parsing/expand/expand_utils.c
 void		parse_dollars(t_command *cmd);
+void		parse_dollars_redir(t_command *cmd);
+void		replace_negativ_char(t_command *cmd);
+void		replace_negativ_char_redir(t_command *cmd);
 int			what_state(char *str, int j);
 int			ft_isalnum(int c);
-void		replace_negativ_char(t_command *cmd);
+
+// parsing/expand/delete_quote.c
+void		negativ_quote(char *str);
+char		*del_one_neg_quotes(char *str);
+int			del_all_neg_quotes(t_command *cmd);
+int			del_quotes(t_command *cmd);
+
+// parsing/expand/delete_quote_redir_list.c
+int			del_all_neg_quotes_redir(t_command *cmd);
+int			delete_quotes_redir_list(t_command *cmd);
 
 // parsing/parser/parser.c
 bool		redirection_validation(t_first *uno);
 bool		pipes_validation(t_first *uno);
-bool		parser(t_first *uno);
+bool		command_validation(t_first *uno);
 
 // parsing/parser/parser_utils.c
 t_command	*new_cmd(t_env *env);
@@ -201,11 +224,14 @@ char		**spliting_plus(char *str);
 char		*quoting_ruling(char *str);
 char		**split_cleaning(char **split);
 
-// parsing/lexer/lexer.c
-t_first		*lexer(char *str);
-int			lexer_id_three(t_first **uno, char *str, int *mode, int *i);
-int			lexer_id_two(t_first **uno, char *str, int *mode);
+// parsing/lexer/lexer_one.c
 int			lexer_id_one(char c, int *mode);
+int			lexer_id_two(t_first **uno, char *str, int *mode);
+int			lexer_id_three(t_first **uno, char *str, int *mode);
+int			lexer_id_four(t_first **uno, char *str, int *mode, int *i);
+t_first		*lexer(char *str);
+
+// parsing/lexer/lexer_two.c 
 
 // parsing/lexer/lexer_utils.c
 void		print_lexer(t_first *uno);
@@ -213,6 +239,9 @@ void		add_back_uno(t_first **uno, t_first *new);
 t_first		*new_uno(int type, char *content);
 char		*alloc_content(char *str, unsigned int size);
 int			actual_mode(char c);
+
+//parsing/lexer/check_quotes.c
+bool		check_quotes(char *str);
 
 // parsing/lexer/lexer_utils_two.c
 t_first		*new_uno(int type, char *content);
@@ -238,6 +267,9 @@ int			lst_len(t_env *env);
 char		*alloc_line(char *name, char *content);
 char		**envp_to_char(t_env *env);
 
+//utils/erroring.c 
+void		ft_error(char *str, char *next, int error_type, bool update);
+
 //utils/freeing.c
 void		freeing_unix(t_token *arg);
 void		freeing_command(t_token *arg);
@@ -248,12 +280,15 @@ void		freeing_path_and_argz(t_token *arg);
 // utils/ft_split.c
 char		**ft_split(char const *s, char c);
 
+//utils/singleton.c
+int			singleton(int set, bool write);
+
 // utils/utils_one.c
 int			ft_atoi(const char *str);
 char		*ft_strdup(const char *str);
 size_t		ft_strlen(const char *str);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
-int			is_set(char c, const char *set);
+// int			is_set(char c, const char *set);
 
 // utils/utils_two.c
 char		*ft_strtrim(const char *s1, const char *set);
@@ -265,11 +300,15 @@ bool		is_lowercase(char c);
 bool		is_printable_except_space(char c);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strjoin_new(char *s1, char *s2, int flag);
+void		ft_putnbr_fd(int n, int fd);
 
 // utils/utils_four.c
 int			strnstr_int(char *str, char *to_find);
 bool		is_whitespace(char c);
 void		writing_error(char *str, int num);
 void		writing(char *intro, char *content);
+
+// utils/ft_itoa.c
+char	*ft_itoa(int nb);
 
 #endif

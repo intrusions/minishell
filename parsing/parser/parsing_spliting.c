@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_spliting.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/27 02:13:35 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/27 02:15:54 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 15:47:07 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/29 17:36:17 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,3 @@ char	**split_cleaning(char **split)
 	}
 	return (split);
 }
-
-// t_command	*parse_line(char *str, t_env *env)
-// {
-// 	char			**split;
-// 	t_command		*cmd;
-// 	t_command		*tmp;
-// 	int				i;
-
-// 	split = spliting_plus(str);
-// 	i = -1;
-// 	cmd = new_cmd(env);
-// 	tmp = cmd;
-// 	while (split[++i])
-// 	{
-// 		if (is_arg(split[i]))
-// 			add_back_tkn(&tmp->arg, new_tkn(split[i]));
-// 		if (is_redirection(split[i]))
-// 			add_back_tkn(&tmp->redir, new_tkn(split[i]));
-// 		if (is_new_cmd(split[i]))
-// 		{
-// 			add_back_cmd(&tmp, new_cmd(env));
-// 			tmp = tmp->next;
-// 		}
-// 	}
-// 	return (cmd);
-// }

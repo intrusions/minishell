@@ -3,38 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:06:53 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/27 02:21:29 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/30 17:54:46 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../execution.h"
-
-char	*find_content(char *name, t_env *env)
-{
-	t_env	*tmp;
-
-	printf("%s", name);
-	tmp = env;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->name, &name[1], (ft_strlen(name) - 1)) == 0)
-			return (tmp->content);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
 
 char	*find_content_cd(char *name, t_env *env)
 {
 	t_env	*tmp;
 
 	tmp = env;
-	while (tmp)
+	while (tmp != NULL)
 	{
-		if (!ft_strcmp(name, tmp->name))
+		if (ft_strcmp(name, tmp->name) == 0)
 			return (tmp->content);
 		tmp = tmp->next;
 	}
@@ -47,9 +32,9 @@ int	change_dir(char *str, t_env *env)
 	int		ret;
 
 	if (!ft_strncmp(str, "~", 1))
-		buf = ft_strdup(find_content("HOME", env));
+		buf = ft_strdup(find_content_cd("HOME", env));
 	else if (ft_strncmp(str, "-", 1) == 0)
-		buf = ft_strdup(find_content("OLDPWD", env));
+		buf = ft_strdup(find_content_cd("OLDPWD", env));
 	else
 		buf = ft_strdup(str);
 	if (!buf)
@@ -85,16 +70,17 @@ void	exec_cd(t_command *cmd)
 		change_dir("~", cmd->env);
 	if (change_dir(cmd->arg->argz[1], cmd->env) == -1)
 	{
-		write(1, "bash: cd: ", ft_strlen("bash: cd: "));
-		write(1, cmd->arg->argz[1], ft_strlen(cmd->arg->argz[1]));
-		write(1, ": No such file or directory\n", 29);
+		ft_error("bash: cd: ", cmd->arg->argz[1], 1, 1);
+		// write(1, "bash: cd: ", ft_strlen("bash: cd: "));
+		// write(1, cmd->arg->argz[1], ft_strlen(cmd->arg->argz[1]));
+		// write(1, ": No such file or directory\n", 29);
 		return ;
 	}
 	else
 	{
 		getcwd(pwd, 500);
-		cmd->arg->argz[1] = \
-			ft_strjoin("OLDPWD=", find_content_cd("PWD", cmd->env));
+		cmd->arg->argz[1] = ft_strjoin("OLDPWD="\
+			, find_content_cd("PWD", cmd->env));
 		exec_export(cmd);
 		free(cmd->arg->argz[1]);
 		cmd->arg->argz[1] = ft_strjoin("PWD=", pwd);

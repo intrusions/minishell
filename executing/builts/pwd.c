@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 12:07:14 by nsartral          #+#    #+#             */
-/*   Updated: 2022/07/27 02:30:57 by jucheval         ###   ########.fr       */
+/*   Updated: 2022/07/29 15:17:19 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*find_pwd(t_command *cmd)
 	t_env	*tmp;
 
 	tmp = cmd->env;
-	while (tmp)
+	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->name, "PWD", 3) == 0)
 			return (tmp->content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirecting_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/27 03:01:25 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/27 03:02:35 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 17:26:02 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/30 15:00:45 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,6 @@ bool	check_fd_in(char *content)
 		return (writing_error(ft_strtrim(content, "> "), NO_FILE), 0);
 	if (access(content, R_OK) == -1)
 		return (writing_error(ft_strtrim(content, "> "), WRONG_CHMOD), 0);
-	return (1);
-}
-
-bool	init_fd_in(t_command *cmd)
-{
-	t_token	*tmp;
-	t_token	*the_one;
-
-	tmp = cmd->redir;
-	the_one = NULL;
-	while (tmp)
-	{
-		if (tmp->type == HEREDOC || tmp->type == READ)
-		{
-			if (!check_fd_in(tmp->content))
-				return (0);
-			the_one = tmp;
-		}
-		tmp = tmp->next;
-	}
-	if (the_one)
-	{
-		if (the_one->type == HEREDOC)
-			cmd->fd_in = opening_heredoc(the_one->content);
-		if (the_one->type == READ)
-			cmd->fd_in = opening_standard_input(the_one->content);
-	}
-	if (!the_one && !cmd->is_piped)
-		cmd->fd_in = 0;
 	return (1);
 }
 
@@ -73,4 +44,24 @@ bool	check_fd_out(t_token *redir)
 		close(fd);
 	}
 	return (1);
+}
+
+t_token	*last_redir(t_command *cmd)
+{
+	t_token	*tmp;
+	t_token	*the_one;
+
+	tmp = cmd->redir;
+	the_one = NULL;
+	while (tmp != NULL)
+	{
+		if (tmp->type == APPEND || tmp->type == WRITE)
+		{
+			if (check_fd_out(tmp) == 0)
+				return (0);
+			the_one = tmp;
+		}
+		tmp = tmp->next;
+	}
+	return (the_one);
 }

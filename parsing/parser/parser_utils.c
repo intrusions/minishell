@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jucheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nsartral <nsartral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/24 22:30:32 by jucheval          #+#    #+#             */
-/*   Updated: 2022/07/27 22:41:34 by jucheval         ###   ########.fr       */
+/*   Created: 2022/07/29 15:47:12 by nsartral          #+#    #+#             */
+/*   Updated: 2022/07/30 15:40:14 by nsartral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_command	*new_cmd(t_env *env)
 	t_command	*new;
 
 	new = (t_command *)malloc(sizeof(t_command));
-	if (!new)
+	if (new == NULL)
 		return (NULL);
 	new->env = env;
 	new->fd_in = -1;
@@ -49,7 +49,7 @@ t_token	*new_tkn(char *arg, int type)
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
-	if (!new)
+	if (new == NULL)
 		return (NULL);
 	new->content = arg;
 	new->type = type;
@@ -76,53 +76,35 @@ t_command	*step_two(t_first *uno, t_env *env)
 {
 	t_command		*cmd;
 	t_command		*tmp_cmd;
-	t_first         *tmp_uno;
-	t_token			*new_token;
-	int 			t;
-	char			*joined;
+	t_first			*tmp_uno;
+	int				t;
 
 	cmd = new_cmd(env);
-	if (!cmd)
-		return (0);
 	tmp_cmd = cmd;
 	tmp_uno = uno;
 	t = 0;
-	while (tmp_uno)
+	while (tmp_uno != NULL)
 	{
 		if (tmp_uno->type == WORD)
+			add_back_tkn(&tmp_cmd->arg \
+				, new_tkn(tmp_uno->content, tmp_uno->type));
+		if (tmp_uno->type == APPEND || tmp_uno->type == WRITE \
+			|| tmp_uno->type == HEREDOC || tmp_uno->type == READ)
 		{
-			new_token = new_tkn(tmp_uno->content, tmp_uno->type);
-			if (!new_token)
-				return (NULL);
-			add_back_tkn(&tmp_cmd->arg, new_token);
-		}
-		if (tmp_uno->type == APPEND || tmp_uno->type == WRITE || tmp_uno->type == HEREDOC || tmp_uno->type == READ)
-		{
-			if (tmp_uno->next && tmp_uno->next->type == WORD)
+			if (tmp_uno->next != NULL && tmp_uno->next->type == WORD)
 			{
-				joined = ft_strjoin(tmp_uno->content, tmp_uno->next->content);
-				if (!joined)
-					return (NULL);
-				new_token = new_tkn(joined, tmp_uno->type);
-				if (!new_token)
-					return (NULL);
-				add_back_tkn(&tmp_cmd->redir, new_token);
+				add_back_tkn(&tmp_cmd->redir \
+					, new_tkn(ft_strjoin(tmp_uno->content \
+						, tmp_uno->next->content), tmp_uno->type));
 				t = 1;
 			}
 			else
-			{
-				new_token = new_tkn(tmp_uno->content, tmp_uno->type);
-				if (!new_token)
-					return (0);
-				add_back_tkn(&tmp_cmd->redir, new_token);
-			}
+				add_back_tkn(&tmp_cmd->redir \
+					, new_tkn(tmp_uno->content, tmp_uno->type));
 		}
 		if (tmp_uno->type == PIPE)
 		{
-			cmd = new_cmd(env);
-			if (!cmd)
-				return (0);
-			add_back_cmd(&tmp_cmd, cmd);
+			add_back_cmd(&tmp_cmd, new_cmd(env));
 			tmp_cmd = tmp_cmd->next;
 		}
 		if (t == 1)
